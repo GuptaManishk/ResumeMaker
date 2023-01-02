@@ -1,0 +1,137 @@
+// Decompiled by DJ v2.8.8.54 Copyright 2000 Atanas Neshkov  Date: 8/26/2005 11:05:29 PM
+// Home Page : http://members.fortunecity.com/neshkov/dj.html  - Check often for new version!
+// Decompiler options: packimports(3) 
+// Source File Name:   Appointment.java
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.PrintStream;
+import java.sql.*;
+import java.util.EventObject;
+import javax.swing.*;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.text.JTextComponent;
+
+public class Appointment
+    implements ActionListener
+{
+
+    public Appointment()
+    {
+        frame = new JWindow();
+        grid = new GridBagLayout();
+        gcons = new GridBagConstraints();
+        Color color = new Color(173, 214, 255);
+        panel = new JPanel();
+        panel.setBackground(color);
+        panel.setBorder(new TitledBorder(new MatteBorder(new ImageIcon("images//blue.jpg"))));
+        JPanel jpanel = new JPanel();
+        date = new JLabel("Date");
+        desc = new JLabel("Description");
+        Notes = new JLabel("Notes");
+        time = new JLabel("Time");
+        String as[] = {
+            "Due", "Done"
+        };
+        check = new JComboBox(as);
+        textarea = new JTextArea(5, 27);
+        byte byte0 = 20;
+        byte byte1 = 30;
+        JScrollPane jscrollpane = new JScrollPane(textarea, byte0, byte1);
+        ok = new JButton("   OK   ");
+        cncl = new JButton("Cancel ");
+        ok.addActionListener(this);
+        cncl.addActionListener(this);
+        panel.setLayout(grid);
+        tdate = new JTextField(7);
+        tdesc = new JTextField(27);
+        ttime = new JTextField(7);
+        jpanel.add(check);
+        jpanel.add(date);
+        jpanel.add(tdate);
+        jpanel.add(time);
+        jpanel.add(ttime);
+        gcons.gridwidth = 0;
+        gcons.anchor = 17;
+        grid.setConstraints(jpanel, gcons);
+        panel.add(jpanel);
+        jpanel.setBackground(color);
+        gcons.gridwidth = 0;
+        gcons.anchor = 18;
+        grid.setConstraints(desc, gcons);
+        panel.add(desc);
+        gcons.gridwidth = 0;
+        gcons.anchor = 18;
+        grid.setConstraints(tdesc, gcons);
+        panel.add(tdesc);
+        gcons.gridwidth = 0;
+        gcons.anchor = 18;
+        grid.setConstraints(Notes, gcons);
+        panel.add(Notes);
+        gcons.gridwidth = 0;
+        gcons.anchor = 18;
+        grid.setConstraints(jscrollpane, gcons);
+        panel.add(jscrollpane);
+        JPanel jpanel1 = new JPanel();
+        gcons.gridwidth = 0;
+        gcons.anchor = 10;
+        grid.setConstraints(jpanel1, gcons);
+        panel.add(jpanel1);
+        jpanel1.add(ok);
+        jpanel1.add(cncl);
+        jpanel1.setBackground(color);
+        check.setBackground(color);
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+        frame.setSize(450, 260);
+        frame.setLocation(200, 150);
+    }
+
+    public void actionPerformed(ActionEvent actionevent)
+    {
+        JButton jbutton = (JButton)actionevent.getSource();
+        if(jbutton == cncl)
+            frame.setVisible(false);
+        if(jbutton == ok)
+            try
+            {
+                Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
+                Connection connection = DriverManager.getConnection("jdbc:odbc:resume", "sa", "");
+                PreparedStatement preparedstatement = connection.prepareStatement("insert into schedule(status,cdate,ttime,tdescription,notes )Values(?,?,?,?,?)");
+                preparedstatement.setString(1, (String)check.getSelectedItem());
+                preparedstatement.setString(2, tdate.getText());
+                preparedstatement.setString(3, ttime.getText());
+                preparedstatement.setString(4, tdesc.getText());
+                preparedstatement.setString(5, textarea.getText());
+                preparedstatement.executeUpdate();
+            }
+            catch(Exception exception)
+            {
+                System.out.print(exception);
+                JOptionPane.showMessageDialog(null, "Error Occured While data submitted in database", "Database Error", 2);
+            }
+    }
+
+    public static void main(String args[])
+    {
+        new Appointment();
+    }
+
+    JWindow frame;
+    JPanel panel;
+    JLabel date;
+    JLabel desc;
+    JLabel Notes;
+    JLabel time;
+    JComboBox check;
+    JTextArea textarea;
+    JTextField tdate;
+    JTextField tdesc;
+    JTextField ttime;
+    JButton ok;
+    JButton cncl;
+    GridBagLayout grid;
+    GridBagConstraints gcons;
+}

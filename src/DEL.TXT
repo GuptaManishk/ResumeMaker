@@ -1,0 +1,52 @@
+public void del(String st)
+{
+	try
+	{
+	
+		Statement stp2;
+		stp2=con2.createStatement();
+		stp2.executeUpdate(" delete from todolist where listcode=?");
+		
+	}
+	catch(Exception r)
+	{
+		System.out.println(" Del :: "+r);
+	}
+}
+
+---------------
+
+try
+		 {
+		 		String zzz;
+				Statement st=con.createStatement();
+			 	ResultSet rs=st.executeQuery("Select  rtrim(Candidatecode) from resume");				 
+             	while (rs.next())
+    		  	{                          
+					zzz=rs.getString(1);
+
+					if (zz.equals(zzz) )
+					 {
+                          ch='y';break;
+    				 }
+					else
+                     {
+                             ch='n';   
+					 }
+   			  }
+             if(ch=='y')
+		      {
+			  del(zz);				
+				}
+			  if(ch=='n')
+		      {
+				  JOptionPane.showMessageDialog(null,"Please Check  ID ","Try Again ",JOptionPane.WARNING_MESSAGE);
+                  
+	          }
+	   
+	       }
+	catch(Exception ex)
+	     {
+		    	System.out.println(ex);
+	     }
+		}

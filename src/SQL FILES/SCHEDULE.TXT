@@ -1,0 +1,13 @@
+ create table schedule
+(
+apptid int identity(1,1), 
+status varchar(10),
+cdate smalldatetime,
+ttime char(10),
+tdescription varchar(100),
+vweek varchar(30),
+notes varchar(3000)
+ 
+)
+
+
